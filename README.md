@@ -8,7 +8,7 @@
 - **Works with any LLM**: ChatGPT, Claude, Gemini, DeepSeek, or local models via web UI — no API billing required.
 - **Persistent Context**: Automatically injects core rules, project docs, and open error tickets into every report (`<id>_report.txt`).
 - **Safe Local Automation**: Validates PowerShell AST syntax before execution, enforces per-project mutex locks and FIFO queues.
-- **100% Portable**: Self-contained folder structure with one-click ZIP export and seamless session handoff (`старт_нового_чата.txt`).
+- **100% Portable**: Self-contained folder structure with one-click ZIP export and seamless session handoff (`start_new_chat.txt`).
 
 ## Quick Start
 1. Run `Start_NeuroBridge.cmd` to launch **`NeuroBridgeTray.exe`** in the system tray.
