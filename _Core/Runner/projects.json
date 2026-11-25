@@ -1,0 +1,15 @@
+﻿{
+    "lang":  "ru",
+    "active":  "NeuroBridge_Core",
+    "projects":  [
+                     {
+                         "path":  "C:\\NeuroBridge",
+                         "name":  "NeuroBridge Core",
+                         "id":  "NeuroBridge_Core",
+                         "buttons":  [
+
+                                     ],
+                         "report":  "NeuroBridge_report.txt"
+                     }
+                 ]
+}
