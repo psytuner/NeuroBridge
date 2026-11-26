@@ -1,12 +1,13 @@
-﻿# [CORE_TERMINOLOGY] ЕДИНЫЙ СЛОВАРЬ ТЕРМИНОВ NEUROBRIDGE И ПРОЕКТОВ
-## 1. СИСТЕМНЫЕ ТЕРМИНЫ NEUROBRIDGE (ОБЩИЕ ДЛЯ ВСЕХ ПРОЕКТОВ)
-- **NeuroBridge** (`C:\NeuroBridge\`): единый программный комплекс — внешний мозг, долговременная память и исполнительный мост между облачной/локальной LLM и ОС Windows.
-- **Ядро** (`_Core\`): неизменная общая часть (`_Core\Docs\`, `_Core\Runner\`, `_Core\TrayApp\`), управляющая всеми проектами.
-- **Диспетчер / Панель в трее** (`NeuroBridgeTray.exe`): приложение Windows в трее для выбора активного проекта, создания проектов, сетевой синхронизации и управления конвейером.
-- **Конвейер / Раннер** (`go.ps1` + `auto_footer.ps1` + `snapshot_knowledge.ps1`): исполнитель скриптов с плашками, звуками наковальни и автоподклейкой памяти в отчёт.
-- **Автоперехватчик** (`watcher_go.ps1`): фоновый монитор буфера обмена с AST-проверкой синтаксиса PowerShell и запуском скриптов без нажатия Alt+E.
-- **Ручной запуск / Хоткей** (`hotkey_go.ps1`, Alt+E): резервный ручной запуск скрипта из буфера по клавише Alt+E.
-- **Антидубль** (`last_step.hash` / `last_watcher.hash`): защита от случайного повтора уже выполненного блока по SHA256; сбрасывается единоразово кнопкой в Диспетчере.
-- **Отчёт проекта** (`<Код>_отчёт.txt`, для модов — `VS_отчёт.txt`): персональный выходной файл активного проекта, автоматически помещаемый в буфер обмена.
-- **Снимок старта / Старт чата** (`C:\NeuroBridge\старт_нового_чата.txt`): автообновляемый файл передачи памяти в новый диалог (3-шаговый протокол).
-- **Эталон конвейера** (`_launcher_golden\`): резервный слепок рабочих скриптов, диспетчера и документации ядра.
+﻿# [CLASS: ALWAYS]
+# [CORE_TERMINOLOGY] NEUROBRIDGE SYSTEM TERMINOLOGY
+- **NeuroBridge** (`C:\NeuroBridge\`): portable external memory & local Windows automation bridge between LLM and OS.
+- **Core** (`_Core\`): shared engine (`_Core\Docs\`, `_Core\Runner\`, `_Core\TrayApp\`) governing all projects.
+- **Project Manager** (`NeuroBridgeTray.exe`): system tray GUI for switching projects, creating projects, syncing, and pipeline control.
+- **Pipeline / Runner** (`go.ps1` + `auto_footer.ps1` + `snapshot_knowledge.ps1`): script executor with UI toasts, sounds, and auto-appended memory.
+- **Auto-Watcher** (`watcher_go.ps1`): clipboard monitor with PowerShell AST syntax check and automatic execution.
+- **Manual Hotkey** (`hotkey_go.ps1`, Alt+E): fallback manual script trigger from clipboard.
+- **Anti-Duplicate** (`last_step.hash` / `last_watcher.hash`): SHA256 guard against re-running the same block; reset via Manager button.
+- **Project Report** (`<id>_report.txt`, e.g., `VS_report.txt`): isolated output file per project placed into clipboard automatically.
+- **Error Report** (`C:\NeuroBridge\NeuroBridge_error.txt`): isolated crash/AST error report auto-copied on failure.
+- **Start Snapshot** (`C:\NeuroBridge\start_new_chat.txt`): auto-updated Core bootstrap file for new chat sessions.
+- **Golden Snapshot** (`_launcher_golden\`): verified backup snapshots of working Runner, Manager, and Core docs.

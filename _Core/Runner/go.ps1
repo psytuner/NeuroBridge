@@ -15,7 +15,7 @@ function Show-Toast($title,$sub,$bg,$bd,$wav,$hold,$slot){
   $mute=Test-Path "C:\NeuroBridge\_Core\Runner\sound.disabled"
   if(-not $mute -and $wav -and (Test-Path $wav)){(New-Object Media.SoundPlayer $wav).Play()}
   for($i=1;$i -le 8;$i++){$f.Opacity=$i*0.12;[Windows.Forms.Application]::DoEvents();Start-Sleep -Milliseconds 14}
-  if($hold -gt 0){Start-Sleep -Milliseconds $hold;for($i=7;$i -ge 0;$i--){$f.Opacity=$i*0.12;[Windows.Forms.Application]::DoEvents();Start-Sleep -Milliseconds 14};$f.Close();$f.Dispose()}else{return $f}
+  if($hold -gt 0){if ($hold -gt 0) { if ($hold -gt 0) { Start-Sleep -Milliseconds $hold } };for($i=7;$i -ge 0;$i--){$f.Opacity=$i*0.12;[Windows.Forms.Application]::DoEvents();Start-Sleep -Milliseconds 14};$f.Close();$f.Dispose()}else{return $f}
 }
 $nb=(Split-Path (Split-Path $PSScriptRoot));$sys="$nb\_Core\Runner";$pCfg=(Get-Content "$sys\projects.json" -Raw -Encoding UTF8)|ConvertFrom-Json
 $lng=if($pCfg.lang){$pCfg.lang}else{"ru"};$d=(Get-Content "$nb\_Core\Lang\$lng.json" -Raw -Encoding UTF8)|ConvertFrom-Json
@@ -53,10 +53,10 @@ try{
     $out=$null;$curCode|Out-File $tmp -Encoding UTF8;. $tmp
     if([string]::IsNullOrWhiteSpace($out)){$out=$defaultOut}
     $repName=[IO.Path]::GetFileName($out);$byRep=$pCfg.projects|Where-Object{$_.report -eq $repName}|Select-Object -First 1;if($byRep){$pTitle=$byRep.name}
-    $rem=[Math]::Max(0,320-$sw.ElapsedMilliseconds);if($rem -gt 0){Start-Sleep -Milliseconds $rem}
+    $rem=[Math]::Max(0,650-$sw.ElapsedMilliseconds);if($rem -gt 0){Start-Sleep -Milliseconds $rem}
     Close-ProgressWindow $autoW
-    if($firstLine -match '^#.*_[0-9]+$'){Show-Toast $pTitle $d.toast_blk '#163A59' '#38BDF8' "$sys\_sounds\block_ok.wav" 1050 $uiSl.Slot}
-    elseif(Test-Path $out){
+    if($firstLine -match '^#.*_[0-9]+$'){Show-Toast $pTitle $d.toast_blk '#163A59' '#38BDF8' "$sys\_sounds\block_ok.wav" -1 $uiSl.Slot}
+    elseif(Test-Path $out){ Remove-Item "$nb\_Core\Logs\error_report_ready.flag" -Force -EA 0;
       $cMtx=New-Object Threading.Mutex($false,'Global\NeuroBridge_Clip_Lock');$cOk=$cMtx.WaitOne(2000)
       try{[Windows.Forms.Clipboard]::Clear();$sc=New-Object Collections.Specialized.StringCollection;$sc.Add($out)|Out-Null;[Windows.Forms.Clipboard]::SetFileDropList($sc)}finally{if($cOk){$cMtx.ReleaseMutex()};$cMtx.Dispose()}
       Show-Toast $pTitle $d.toast_ok '#144229' '#22C55E' "$sys\_sounds\task_ok.wav" 1350 $uiSl.Slot
@@ -67,10 +67,19 @@ try{
   if([string]::IsNullOrWhiteSpace($out)){$out=$defaultOut}
   $errTxt=$_.Exception.Message + "`r`n" + $_.ScriptStackTrace;$errTxt|Out-File "$sys\last_step_error.log" -Encoding UTF8
   & "$sys\runner_log.ps1" 'GO_ERR' $_.Exception.Message
-  "=== SCRIPT ERROR ===`r`n$errTxt"|Add-Content $out -Encoding UTF8
+  $out="$nb\NeuroBridge_error.txt"; $global:out=$out; $hdr = if ($raw -match "#\s*TEST_ERROR_SIMULATION") { "=== SIMULATED TEST ERROR (PIPELINE OK) ===" } else { "=== SCRIPT ERROR ===" }; "$hdr`r`n$errTxt"|Out-File $out -Encoding UTF8; & "$sys\auto_footer.ps1"; $out|Out-File "$nb\_Core\Logs\error_report_ready.flag" -Encoding UTF8
   if(Test-Path $out){[Windows.Forms.Clipboard]::Clear();$sc=New-Object Collections.Specialized.StringCollection;$sc.Add($out)|Out-Null;[Windows.Forms.Clipboard]::SetFileDropList($sc)}
   Show-Toast $pTitle $d.toast_err '#5C1919' '#EF4444' "$sys\_sounds\error_glass.wav" 1600 $uiSl.Slot
 }finally{Free-UiSlot $uiSl.Lock;if($mtx){$mtx.ReleaseMutex();$mtx.Dispose()}}
+
+
+
+
+
+
+
+
+
 
 
 

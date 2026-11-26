@@ -14,7 +14,7 @@ function Test-Ok([string]$t) {
   if ($t -notmatch 'auto_footer\.ps1' -and $first -notmatch '1|2|3|4|5|6|7|8|9') { return $false }
   $tok = $null; $err = $null
   [void][Management.Automation.Language.Parser]::ParseInput($t, [ref]$tok, [ref]$err)
-  if ($err -ne $null -and $err.Count -gt 0) { & "$coreR\runner_log.ps1" 'WATCHER' "Skip: AST err $($err.Item(0).Message)"; return $false }
+  if ($err -ne $null -and $err.Count -gt 0) { & "$coreR\runner_log.ps1" 'WATCHER' "AST err: $($err.Item(0).Message)"; $ef="$coreR\..\..\NeuroBridge_error.txt"; $out=$ef; $global:out=$ef; "=== AST SYNTAX ERROR ===`r`n$($err.Item(0).Message)`r`n--- CLIPBOARD ---`r`n$t"|Out-File $ef -Encoding UTF8; & "$coreR\auto_footer.ps1"; $ef|Out-File "$coreR\..\Logs\error_report_ready.flag" -Encoding UTF8; [Windows.Forms.Clipboard]::Clear(); $sc=New-Object Collections.Specialized.StringCollection; $sc.Add([IO.Path]::GetFullPath($ef))|Out-Null; [Windows.Forms.Clipboard]::SetFileDropList($sc); (New-Object Media.SoundPlayer "$coreR\_sounds\error_glass.wav").Play(); return $false }
   return $true
 }
 $f = New-Object Windows.Forms.Form
@@ -38,6 +38,10 @@ $tm.Add_Tick({
   } catch { & "$coreR\runner_log.ps1" 'WATCHER' "Err: $($_.Exception.Message)" }
 })
 $tm.Start(); [Windows.Forms.Application]::Run($f)
+
+
+
+
 
 
 

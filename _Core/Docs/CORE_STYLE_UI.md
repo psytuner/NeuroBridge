@@ -1,29 +1,25 @@
-﻿# [DOC_STYLE_UI] НАСТРОЙКИ СТИЛЯ, ШРИФТОВ И ОФОРМЛЕНИЯ ОТВЕТОВ ИИ
-## 1. ТОН И СТРУКТУРА ОТВЕТА
-- Язык ответа: строго русский, живой и деловой тон без канцелярита, самоповторов и декларативных обещаний ('отныне', 'обещаю', 'буду соблюдать').
-- Прямой ответ первым абзацем: при вопросе, претензии или ошибке пользователя первым абзацем сразу даётся прямой ответ по делу без шаблонных вступлений.
-- Завершение ответа без навязчивых вопросов и предложений: запрещено в конце каждого ответа задавать уточняющие вопросы или предлагать "что ещё можно сделать / улучшить" (это отвлекает и создаёт ощущение недоделанной работы). Любые идеи улучшений записываются молча в 02_Docs\DOC_BACKLOG.md и поднимаются только по запросу пользователя.
-- Порядок ответа со скриптом: 1) краткое пояснение по сути (1-2 строки обычного текста, без маркированных списков со звёздочками перед кодом); 2) блок(и) кода; 3) строго 1 строка инструкции запуска (копировать кнопкой, Alt+E, прикрепить отчёт) и немедленный конец сообщения.
-## 2. ШРИФТЫ И ЦВЕТОВАЯ КОДИРОВКА (\normalsize\mathsf{\textbf{...}})
-- Файлы обмена (<id>_отчёт.txt и старт_нового_чата.txt) -> кремовый: \color{#f5deb3}{\mathsf{\textbf{<id>_отчёт.txt}}} и \color{#f5deb3}{\mathsf{\textbf{старт\_нового\_чата.txt}}}
-- Закрыть / закрыта игра -> красный: \color{#ff4d4d}{\mathsf{\textbf{ЗАКРЫТЬ ИГРУ}}}
-- Открыть / открыта игра -> зелёный: \color{#4dff88}{\mathsf{\textbf{ОТКРЫТЬ ИГРУ}}}
-- Запись / обновление документации -> голубой: \color{#38bdf8}{\mathsf{\textbf{DOC\_...}}}
-- Иконки и шрифты: использовать чистый жирный шрифт без засечек (\mathsf{\textbf{...}}); не использовать эмодзи-кружки перед файлами отчёта.
-## 3. ПРАВИЛА ПОДАЧИ СКРИПТОВ И ДИАЛОГА
-- Названия файлов отчёта и старта (<id>_отчёт.txt, старт_нового_чата.txt) соответствуют языку диалога.
-- Не упоминать Ctrl+C (пользователь копирует кнопкой под блоком и запускает через Alt+E).
-- Не спрашивать статус игры в тексте (проверять внутри скрипта через Get-Process); напоминать VPN перед запросами к ModDB.- При сообщении о невыполнении скрипта или отказе конвейера предупреждать, что автоперехват может не сработать, и в самом низу ответа выводить: \large\color{#38bdf8}{\mathsf{\textbf{ЗАПУСК ВРУЧНУЮ ЧЕРЕЗ POWERSHELL: Win+R -> powershell -> ПКМ -> Enter}}}
-- Запрет плашки ручного PowerShell при рабочем конвейере: выводить крупную строку ручного запуска PowerShell ЗАПРЕЩЕНО во всех штатных задачах (включая правки NeuroBridgeTray.exe и документации) — она допускается ИСКЛЮЧИТЕЛЬНО при отказе конвейера или остановке служб watcher_go/hotkey_go на время ремонта _Core\Runner.
+﻿# [CLASS: ALWAYS]
+# [CORE_STYLE_UI] AI RESPONSE STYLE, COLORS & UI DESIGN STANDARD
+## 1. MANDATORY RUSSIAN CHAT & RESPONSE STRUCTURE
+- CRITICAL OVERRIDE: Follow AI CHAT LANGUAGE from the report header (Manager RU/EN switch) and the user's dialogue language; internal English docs must never override it.
+- Chat language: ALWAYS Russian (natural, concise, direct, zero boilerplate, zero declarative promises like 'I promise' / 'from now on').
+- Direct answer first: on any user question, complaint, or error, answer directly in the very first paragraph before any script.
+- No unsolicited follow-ups: NEVER end responses with follow-up questions or 'what else we can improve' suggestions; log ideas silently to `DOC_BACKLOG.md`.
+- Script response order: 1) 1-2 lines plain summary (NO bulleted `*` lists before code); 2) code block(s); 3) strictly 1-line run instruction + immediate end of message.
+## 2. COLOR CODING & FONTS (COPY EXACT LATEX TEMPLATES)
+- ALWAYS wrap inline LaTeX in single $ ... $ (never $$ or \( \)), use \_ for underscores, and \  for spaces inside \textbf{...}.
+- Exchange files (`<id>_report.txt`, `NeuroBridge_error.txt`, `start_new_chat.txt`) -> cream: `\color{#f5deb3}{\mathsf{\textbf{<id>_report.txt}}}` (no circle emojis).
+- Documentation updates -> sky blue: `\color{#38bdf8}{\mathsf{\textbf{DOC\_...}}}`
+- Action beacon -> purple: `\color{#c084fc}{\mathsf{\textbf{ДЕЙСТВИЕ СКРИПТА: <4-7 words>}}}` immediately before first code block (no backslashes `\` inside LaTeX).
+- Game status (game projects only): `\large\color{#ff4d4d}{\mathsf{\textbf{ЗАКРЫТЬ ИГРУ}}}` as line 1 before code if game is running; `\large\color{#4dff88}{\mathsf{\textbf{ОТКРЫТЬ ИГРУ}}}` when safe.
+## 3. SCRIPT DELIVERY RULES
+- Never mention Ctrl+C (user clicks Copy button). Never ask if game is closed (check via `Get-Process` inside script).
+- Manual PowerShell banner (`\large\color{#38bdf8}{\mathsf{\textbf{ЗАПУСК ВРУЧНУЮ ЧЕРЕЗ POWERSHELL: Win+R -> powershell -> ПКМ -> Enter}}}`) is FORBIDDEN during normal work or AST syntax errors; show ONLY when `watcher_go`/`go.ps1` pipeline itself failed.
+## 4. NEUROBRIDGE WINDOW & TOAST DESIGN STANDARD
+- All UI windows, progress bars, and dialogs MUST use NeuroBridge dark theme (`#181B22`/`#1E222A`, 2px border `#38BDF8`/`#22C55E`/`#D97706`/`#EF4444`, Segoe UI, `Show-Toast` / `NeuroBridge_UI_Pipe`, `_sounds`). System `MessageBox::Show` is strictly FORBIDDEN.
+- 3-layer analysis format for mod/feature reviews: `1) [УЖЕ В ИГРЕ / МОДЕ]`, `2) [НАША ИНТЕГРАЦИЯ]`, `3) [НАШИ ИЗМЕНЕНИЯ / ДОПОЛНЕНИЯ]`.
 
 
 
 
-
-- Увеличенный шрифт статуса игры: для напоминаний о закрытии/открытии игры в любой формулировке (ЗАКРЫТЬ ИГРУ, ПРИ ЗАКРЫТОЙ ИГРЕ, ОТКРЫТЬ ИГРУ) использовать размер \large и жирный шрифт без засечек (\large\color{#ff4d4d}{\mathsf{\textbf{...}}} / \large\color{#4dff88}{\mathsf{\textbf{...}}}).
-
-- Позиция сигнала статуса игры: требование \large\color{#ff4d4d}{\mathsf{\textbf{ЗАКРЫТЬ ИГРУ}}} всегда ставится самой первой строкой ответа над первым блоком кода (только если игра не была подтверждена как закрытая в прошлом отчёте).
-
-## 4. ДИЗАЙН-СТАНДАРТ ВСЕХ ОКОН И УВЕДОМЛЕНИЙ ПРОЕКТА
-- Любые информационные окна, плашки, прогресс-бары и диалоги подтверждения во всех скриптах Ядра и проектов обязаны строиться исключительно в фирменном стиле NeuroBridge: тёмный фон #181B22 / #1E222A, рамка 2px #38BDF8 (инфо), #22C55E (успех), #D97706 (предупреждение), #EF4444 (ошибка), шрифт Segoe UI, вывод через Show-Toast / NeuroBridge_UI_Pipe и фирменные звуки _Core\Runner\_sounds (с учётом sound.disabled). Системные Windows MessageBox::Show строго запрещены.
 

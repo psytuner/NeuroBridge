@@ -1,15 +1,31 @@
 ﻿{
-    "lang":  "ru",
-    "active":  "NeuroBridge_Core",
+    "lang":  "en",
+    "active":  "Demo_Project",
     "projects":  [
                      {
                          "path":  "C:\\NeuroBridge",
                          "name":  "NeuroBridge Core",
                          "id":  "NeuroBridge_Core",
                          "buttons":  [
-
+                                         {
+                                             "text":  "Скопировать start_new_chat.txt",
+                                             "text_en":  "Copy start_new_chat.txt",
+                                             "bd":  "#38BDF8",
+                                             "bg":  "#163A59",
+                                             "type":  "copy_handoff",
+                                             "target":  ""
+                                         }
                                      ],
                          "report":  "NeuroBridge_report.txt"
+                     },
+                     {
+                         "path":  "C:\\NeuroBridge\\Projects\\Demo_Project",
+                         "name":  "Demo Project",
+                         "id":  "Demo_Project",
+                         "buttons":  [
+
+                                     ],
+                         "report":  "Demo_Project_report.txt"
                      }
                  ]
 }

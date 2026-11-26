@@ -9,14 +9,10 @@ if (-not [string]::IsNullOrWhiteSpace($p)) { $proj = $pCfg.projects | Where-Obje
 if (-not $proj -and -not [string]::IsNullOrWhiteSpace($repName)) { $proj = $pCfg.projects | Where-Object { $_.report -eq $repName } | Select-Object -First 1 }
 if (-not $proj) { $proj = $pCfg.projects | Where-Object { $_.id -eq $pCfg.active } | Select-Object -First 1 }
 $docDir = if ($proj.id -eq "NeuroBridge_Core") { "C:\NeuroBridge\_Core\Docs" } else { "$($proj.path)\02_Docs" }
-$histDir = "$docDir\_dialog_history"
-New-Item -Path $histDir -ItemType Directory -Force | Out-Null
 $dl = "$docDir\DIALOG_LOG.md"
-$dayFile = "$histDir\HISTORY_$((Get-Date).ToString('yyyy-MM-dd')).md"
-$ts = (Get-Date).ToString("yyyy-MM-dd HH:mm:ss UTC+07:00")
-$entry = "`r`n### [$ts] | Проект: $($proj.id)`r`n- **USER:** $u`r`n- **AI:** $a`r`n"
-Add-Content -Path $dl -Value $entry -Encoding UTF8
-Add-Content -Path $dayFile -Value $entry -Encoding UTF8
-
-
+$ts = (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")
+$items = if (Test-Path $dl) { (Get-Content $dl -Raw -Encoding UTF8) -split "(?m)^### \[" | Where-Object { $_.Trim() -ne "" } } else { @() }
+$keep = @($items | Select-Object -Last 29) | ForEach-Object { "### [" + $_.Trim() }
+$keep += "### [$ts | $($proj.id)]`r`n- USER: $u`r`n- AI: $a"
+($keep -join "`r`n`r`n") | Out-File $dl -Encoding UTF8
 
